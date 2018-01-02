@@ -1,6 +1,9 @@
-#ifndef __CRYPTO_H__
-#define __CRYPTO_H__
+ /* equals import in java*/
+#include "crypto.h"
+/* defines stdin, stdout, stderr */
+#include <stdio.h>
 
+/** Do I even need these constants if they are already defined in crypto.h? **/
 /** Length of key not sufficient. */
 #define E_KEY_TOO_SHORT 1
 
@@ -25,6 +28,9 @@ typedef struct {
     char* chars; /* Key characters. */
 } KEY;
 
+ /**
+	char* indicates pass by value with pointers which equals pass by reference; pass ^= call
+ */
 /**
  * Encrypt the given text and return the encrypted version. The input text
  * may only contain the letters A-Z. No space or other characters are
@@ -38,8 +44,48 @@ typedef struct {
  * @param output Encrypted text
  * @return 0 on success, otherwise error code
  */
-int encrypt(KEY key, const char* input, char* output);
+int encrypt(KEY key, const char* input, char* output) {
+	int err = isKeyValid(key);
+	if(err !=0) {
+		return err;
+	}
+	for(input : o) {
+		if(!MESSAGE_CHARACTERS.contains(o)) {
+			return E_MESSAGE_ILLEGAL_CHAR;
+		}
+	}
+	
+	int keyIterator = 0;
+	char[] temp = new char[input.length];
+	int cypherTextIterator = 0;
+	for (input : o) {
+		/* so
+		temp[cypherTextIterator] = o ^ key[keyIterator]; /* Darf ich so auf key zugreifen? Ist key ein array? Muss es in der Signatur nicht als solches deklariert werden? 
+		   oder so */
+		temp[cypherTextIterator] = (o - 'A') ^ (key[keyIterator] - 'A');
+		temp[cypherTextIterator] = temp[cypherTextIterator] + 'A';
+		cypherTextIterator++;
+		keyIterator++;
+		if (keyIterator == key.length) {
+			keyIterator = 0;
+		}
+	}
+	output = temp;
+	printf(output);
+	return 0;
+}
 
+int isKeyValid(KEY key) {
+	if(key.length < 1) {
+		return E_KEY_TOO_SHORT;
+	}
+	for(key : o) {
+		if(!KEY_CHARACTERS.contains(o)) {
+			return E_KEY_ILLEGAL_CHAR;
+		}
+	}
+	return 0;
+}
 /**
  * Decrypt the given text and return the decrypted version. The cypher text
  * may only contain the characters defined as output of the encrypt function.
@@ -53,6 +99,35 @@ int encrypt(KEY key, const char* input, char* output);
  * @param output Decrypted text
  * @return 0 on success, otherwise error code
  */
-int decrypt(KEY key, const char* cypherText, char* output);
-
-#endif /* __CRYPTO_H__ */
+int decrypt(KEY key, const char* cypherText, char* output) {
+	int err = isKeyValid(key);
+	if(err !=0) {
+		return err;
+	}
+	
+	for(cypherText : o) {
+		if(!CYPHER_CHARACTERS.contains(o)) {
+			return E_CYPHER_ILLEGAL_CHAR;
+		}
+	}
+	
+	
+	int keyIterator = 0;
+	char[] temp = new char[cypherText.length];
+	int cypherTextIterator = 0;
+	for (cypherText : o) {
+		/* so  
+		temp[cypherTextIterator] = o ^ key[keyIterator];
+		   oder so */
+		temp[cypherTextIterator] = (o - 'A') ^ (key[keyIterator] - 'A');
+		temp[cypherTextIterator] = temp[cypherTextIterator] + 'A';
+		cypherTextIterator++;
+		keyIterator++;
+		if (keyIterator == key.length) {
+			keyIterator = 0;
+		}
+	}
+	output = temp;
+	printf(output);
+	return 0;
+}
