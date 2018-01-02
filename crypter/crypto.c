@@ -3,23 +3,6 @@
 /* defines stdin, stdout, stderr */
 #include <stdio.h>
 
-/** Do I even need these constants if they are already defined in crypto.h? **/
-/** Length of key not sufficient. */
-#define E_KEY_TOO_SHORT 1
-
-/** Key contains illegal characters. */
-#define E_KEY_ILLEGAL_CHAR 2
-
-/** Message contains illegal characters. */
-#define E_MESSAGE_ILLEGAL_CHAR 3
-
-/** Cypher text contains illegal characters. */
-#define E_CYPHER_ILLEGAL_CHAR 4
-
-#define KEY_CHARACTERS "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-#define MESSAGE_CHARACTERS "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-#define CYPHER_CHARACTERS "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
-
 /**
  * Key used in de- and encryption.
  */
