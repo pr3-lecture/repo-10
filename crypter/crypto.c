@@ -2,15 +2,7 @@
 #include "crypto.h"
 /* defines stdin, stdout, stderr */
 #include <stdio.h>
-
-/**
- * Key used in de- and encryption.
- */
-typedef struct {
-    int type; /* Type of the key. */
-    char* chars; /* Key characters. */
-} KEY;
-
+#include <string.h>	
  /**
 	char* indicates pass by value with pointers which equals pass by reference; pass ^= call
  */
@@ -27,29 +19,75 @@ typedef struct {
  * @param output Encrypted text
  * @return 0 on success, otherwise error code
  */
-int encrypt(KEY key, const char* input, char* output) {
-	int err = isKeyValid(key);
-	if(err !=0) {
-		return err;
-	}
-	for(input : o) {
-		if(!MESSAGE_CHARACTERS.contains(o)) {
-			return E_MESSAGE_ILLEGAL_CHAR;
+
+int areCharsValid(const char* toBeChecked, const char* allowedChars) {
+	int toBeCheckedLength = strlen(toBeChecked);
+	int allowedCharsLength = strlen(allowedChars);
+	int counter = 0;
+	for(int i = 0; i < toBeCheckedLength; i++) {
+		for(int j = 0; j < allowedCharsLength; j++) {
+			if(toBeChecked[i] == allowedChars[j]) {
+				counter++;
+			}
 		}
 	}
+	if (counter != allowedCharsLength) { 
+		return -1;
+	}
 	
+	return 0;
+}
+
+int isKeyValid(char* key) {
+	int keyLength = strlen(key);
+	if(keyLength < 1) {
+		return E_KEY_TOO_SHORT;
+	}
+	
+	int a = areCharsValid(key, KEY_CHARACTERS);
+	if (a == -1) {
+		return E_KEY_ILLEGAL_CHAR;
+	}
+	return 0;
+}
+
+int isMessageValid(const char* message){
+	int a = areCharsValid(message, MESSAGE_CHARACTERS);
+	if (a == -1) {
+		return E_MESSAGE_ILLEGAL_CHAR;
+	}
+	return 0;
+}
+
+int isCypherTextValid(const char* cypherText) {
+	int a = areCharsValid(cypherText, CYPHER_CHARACTERS);
+	if (a == -1) {
+		return E_CYPHER_ILLEGAL_CHAR;
+	}
+	return 0;
+}
+
+
+int encrypt(KEY key, const char* input, char* output) {
+	int err = isKeyValid(key.chars);
+	if (err != 0) {
+		return err;
+	}
+	err = isMessageValid(input);
+	if (err != 0) {
+		return err;
+	}
+		
 	int keyIterator = 0;
-	char[] temp = new char[input.length];
 	int cypherTextIterator = 0;
-	for (input : o) {
-		/* so
-		temp[cypherTextIterator] = o ^ key[keyIterator]; /* Darf ich so auf key zugreifen? Ist key ein array? Muss es in der Signatur nicht als solches deklariert werden? 
-		   oder so */
-		temp[cypherTextIterator] = (o - 'A') ^ (key[keyIterator] - 'A');
+	char temp[strlen(input)];
+	int keyLength = strlen(key.chars);
+	for (int i = 0; i < strlen(input); i++) {
+		temp[cypherTextIterator] = (input[i] - 'A') ^ (key.chars[keyIterator] - 'A');
 		temp[cypherTextIterator] = temp[cypherTextIterator] + 'A';
 		cypherTextIterator++;
 		keyIterator++;
-		if (keyIterator == key.length) {
+		if (keyIterator == keyLength) {
 			keyIterator = 0;
 		}
 	}
@@ -58,17 +96,6 @@ int encrypt(KEY key, const char* input, char* output) {
 	return 0;
 }
 
-int isKeyValid(KEY key) {
-	if(key.length < 1) {
-		return E_KEY_TOO_SHORT;
-	}
-	for(key : o) {
-		if(!KEY_CHARACTERS.contains(o)) {
-			return E_KEY_ILLEGAL_CHAR;
-		}
-	}
-	return 0;
-}
 /**
  * Decrypt the given text and return the decrypted version. The cypher text
  * may only contain the characters defined as output of the encrypt function.
@@ -82,6 +109,7 @@ int isKeyValid(KEY key) {
  * @param output Decrypted text
  * @return 0 on success, otherwise error code
  */
+ /**
 int decrypt(KEY key, const char* cypherText, char* output) {
 	int err = isKeyValid(key);
 	if(err !=0) {
@@ -101,7 +129,7 @@ int decrypt(KEY key, const char* cypherText, char* output) {
 	for (cypherText : o) {
 		/* so  
 		temp[cypherTextIterator] = o ^ key[keyIterator];
-		   oder so */
+		   oder so *//**
 		temp[cypherTextIterator] = (o - 'A') ^ (key[keyIterator] - 'A');
 		temp[cypherTextIterator] = temp[cypherTextIterator] + 'A';
 		cypherTextIterator++;
@@ -113,4 +141,10 @@ int decrypt(KEY key, const char* cypherText, char* output) {
 	output = temp;
 	printf(output);
 	return 0;
+}
+*/
+void main() {
+	printf("Hallo Welt! Bitte töte mich nicht zu früh...\n\n");
+	printf("Die Länge des Wortes 'Heroin' ist: ");
+	/* TODO: Implement: + strlen("Heroin") */
 }
