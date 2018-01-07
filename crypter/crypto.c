@@ -79,13 +79,12 @@ int encrypt(KEY key, const char* input, char* output) {
 	}
 		
 	int keyIterator = 0;
-	int cypherTextIterator = 0;
 	char temp[strlen(input)];
 	int keyLength = strlen(key.chars);
 	for (int i = 0; i < strlen(input); i++) {
-		temp[cypherTextIterator] = (input[i] - 'A') ^ (key.chars[keyIterator] - 'A');
-		temp[cypherTextIterator] = temp[cypherTextIterator] + 'A';
-		cypherTextIterator++;
+		temp[i] = (input[i] - 'A') ^ (key.chars[keyIterator] - 'A');
+		temp[i] = temp[i] + 'A';
+		i++;
 		keyIterator++;
 		if (keyIterator == keyLength) {
 			keyIterator = 0;
@@ -109,32 +108,26 @@ int encrypt(KEY key, const char* input, char* output) {
  * @param output Decrypted text
  * @return 0 on success, otherwise error code
  */
- /**
+
 int decrypt(KEY key, const char* cypherText, char* output) {
-	int err = isKeyValid(key);
-	if(err !=0) {
+	int err = isKeyValid(key.chars);
+	if (err != 0) {
 		return err;
 	}
-	
-	for(cypherText : o) {
-		if(!CYPHER_CHARACTERS.contains(o)) {
-			return E_CYPHER_ILLEGAL_CHAR;
-		}
+	err = isCypherTextValid(cypherText);
+	if (err != 0) {
+		return err;
 	}
-	
-	
+		
 	int keyIterator = 0;
-	char[] temp = new char[cypherText.length];
-	int cypherTextIterator = 0;
-	for (cypherText : o) {
-		/* so  
-		temp[cypherTextIterator] = o ^ key[keyIterator];
-		   oder so *//**
-		temp[cypherTextIterator] = (o - 'A') ^ (key[keyIterator] - 'A');
-		temp[cypherTextIterator] = temp[cypherTextIterator] + 'A';
-		cypherTextIterator++;
+	char temp[strlen(cypherText)];
+	int keyLength = strlen(key.chars);
+	for (int i = 0; i < strlen(cypherText); i++) {
+		temp[i] = (cypherText[i] - 'A') ^ (key.chars[keyIterator] - 'A');
+		temp[i] = temp[i] + 'A';
+		i++;
 		keyIterator++;
-		if (keyIterator == key.length) {
+		if (keyIterator == keyLength) {
 			keyIterator = 0;
 		}
 	}
@@ -142,9 +135,7 @@ int decrypt(KEY key, const char* cypherText, char* output) {
 	printf(output);
 	return 0;
 }
-*/
+
 void main() {
 	printf("Hallo Welt! Bitte töte mich nicht zu früh...\n\n");
-	printf("Die Länge des Wortes 'Heroin' ist: ");
-	/* TODO: Implement: + strlen("Heroin") */
 }
